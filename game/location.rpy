@@ -2,7 +2,6 @@ init python:
     def person_dragged(pers):
         def dragged(drags, drop):
             drag = drags[0]
-            print(f'DRAGGED {pers.display}')
             old_pos = drag.old_position
             if drop is None:
                 drag.snap(old_pos[0], old_pos[1])
