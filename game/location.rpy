@@ -12,19 +12,13 @@ init python:
                 drag.snap(730, 150+index*140)
                 renpy.restart_interaction()
             else:
-                print(f'DROPPED onto {drop.drag_name}')
                 if getattr(car, drop.drag_name) is not None:
-                    print('seat occupied')
                     drag.snap(old_pos[0], old_pos[1])
                 else:
-                    # print('seat free')
-                    # print(f'car seat1: {car.seat1}')
-                    # print(drag.drag_name)
                     drag.snap(drop.x, drop.y)
                     car.remove_pers(pers)
                     location.remove_pers(pers)
                     setattr(car, drop.drag_name, pers)
-                    # print(f'car seat1: {car.seat1}')
                     renpy.restart_interaction()
                     # unfortunately restart_interaction is glitching so we have to
                     # manually snap the person we didn't really dragged
@@ -34,7 +28,6 @@ init python:
     def fix_screen_locations():
         locscreen = renpy.get_screen('location')
         drag_group = locscreen.child.child.child
-        print(vars(drag_group))
         for drag in drag_group.children:
             x, y = drag.old_position[:2]
             drag.snap(x, y)

@@ -3,23 +3,53 @@ label start:
     # create map
     # init location
     $ car = Car()
-    $ location = Location()
-label main_loop:
+    $ location = Location(0.0, "starting point", [])
+    $ road = Road()
+label party:
+    $ road.position = location.position
+    hide screen hiker
+    scene black
     "You arrive at [location.description]"
     "Change party & items"
     call screen location(location, car)
     "You are on the road!"
-    call screen road(car)
-    jump main_loop
+    jump road
     # the game never ends, hehe
 label exit:
     return
 
 init python:
-    class Location:
+    import random
+
+    class Road:
         def __init__(self):
-            self.description = "Random location"
-            self.people = [TestPerson('Joanna'), Person('Joshua', 'pers-2.png'), TestPerson('Maria')]
+            self.position = 0.0
+            self.locations = []
+            self.generate_locations()
+        def cleanup_locations(self):
+            while self.locations and self.locations[0].position < self.position:
+                self.locations.pop(0)
+        def generate_locations(self):
+            tplus = 0
+            while tplus < 60.0:
+                tplus += 10.0 + random.random() * 20
+                self.locations.append(random_location(self.position + tplus))
+        def next_location(self):
+            self.cleanup_locations()
+            if not self.locations:
+                self.generate_locations()
+            return self.locations[0]
+        def advance(self, d):
+            self.position += d
+
+    def random_location(position):
+        return Location(position, "somewhere on the road", [TestPerson("Rando")])
+
+    class Location:
+        def __init__(self, position, description, people):
+            self.position = position
+            self.description = description
+            self.people = people
         def add_pers(self, pers):
             if pers not in self.people:
                 self.people.append(pers)
