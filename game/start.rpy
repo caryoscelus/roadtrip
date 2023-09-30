@@ -18,19 +18,27 @@ init python:
     class Location:
         def __init__(self):
             self.description = "Random location"
-            self.people = [TestPerson(), TestPerson()]
+            self.people = [TestPerson('Joanna'), Person('Joshua', 'pers-2.png'), TestPerson('Maria')]
+        def add_pers(self, pers):
+            if pers not in self.people:
+                self.people.append(pers)
+            return self.people.index(pers)
+        def remove_pers(self, pers):
+            if pers in self.people:
+                self.people.remove(pers)
 
     class Person:
-        def __init__(self, display):
+        def __init__(self, name, display):
+            self.name = name
             self.display = display
 
     class Self(Person):
         def __init__(self):
-            super().__init__('anonymous.png')
+            super().__init__('Myself', 'anonymous.png')
 
     class TestPerson(Person):
-        def __init__(self):
-            super().__init__('pers-1.png')
+        def __init__(self, name):
+            super().__init__(name, 'pers-1.png')
 
     class Car:
         def __init__(self):
@@ -38,3 +46,10 @@ init python:
             self.seat1 = None
             self.seat2 = None
             self.seat3 = None
+        def remove_pers(self, pers):
+            if self.seat1 is pers:
+                self.seat1 = None
+            if self.seat2 is pers:
+                self.seat2 = None
+            if self.seat3 is pers:
+                self.seat3 = None
