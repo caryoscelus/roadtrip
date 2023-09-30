@@ -2,17 +2,15 @@ label start:
     "One day I sold my apartment, bought a car and went on adventure."
     # create map
     # init location
+    play music main
     $ car = Car()
     $ location = Location(0.0, "starting point", [])
     $ road = Road()
 label party:
     $ road.position = location.position
     hide screen hiker
-    scene black
     "You arrive at [location.description]"
-    "Change party & items"
     call screen location(location, car)
-    "You are on the road!"
     jump road
     # the game never ends, hehe
 label exit:
