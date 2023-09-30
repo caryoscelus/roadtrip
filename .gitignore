@@ -1,0 +1,11 @@
+game/saves
+cache/
+*.rpyc
+*.rpymc
+*~
+*.bak
+.emacs.desktop
+*.lock
+log.txt
+traceback.txt
+errors.txt
