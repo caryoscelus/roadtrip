@@ -9,6 +9,7 @@ label main_loop:
     "Change party & items"
     call screen location(location, car)
     "You are on the road!"
+    call screen road(car)
     jump main_loop
     # the game never ends, hehe
 label exit:
