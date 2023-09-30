@@ -1,10 +1,7 @@
 label start:
-    "One day I sold my apartment, bought a car and went on adventure."
-    # create map
-    # init location
     play music main
     $ car = Car()
-    $ location = Location(0.0, "starting point", [])
+    $ location = StartingPoint()
     $ road = Road()
 label party:
     $ road.position = location.position
@@ -23,7 +20,6 @@ init python:
         def __init__(self):
             self.position = 0.0
             self.locations = []
-            self.generate_locations()
         def cleanup_locations(self):
             while self.locations and self.locations[0].position < self.position:
                 self.locations.pop(0)
@@ -56,6 +52,10 @@ init python:
             if pers in self.people:
                 self.people.remove(pers)
 
+    class StartingPoint(Location):
+        def __init__(self):
+            super().__init__(0.0, "starting point", [Self()])
+
     class Person:
         def __init__(self, name, display):
             self.name = name
@@ -71,7 +71,7 @@ init python:
 
     class Car:
         def __init__(self):
-            self.seat0 = Self()
+            self.seat0 = None
             self.seat1 = None
             self.seat2 = None
             self.seat3 = None

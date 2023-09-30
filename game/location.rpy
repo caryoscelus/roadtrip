@@ -31,10 +31,16 @@ init python:
             x, y = drag.old_position[:2]
             drag.snap(x, y)
 
+    class TryToGo(Return):
+        def __call__(self):
+            if car.seat0 is not None:
+                return super().__call__()
+            return None
+
 screen location(location, car):
     fixed:
         add "manage.png"
-        textbutton "Hit the road!" action Return():
+        textbutton "Hit the road!" action TryToGo():
             xalign 0.5
             ypos 0.9
         draggroup:
@@ -44,6 +50,7 @@ screen location(location, car):
             use person(440, 520, car.seat3)
             for i, pers in enumerate(location.people):
                 use person(730, 150+i*140, pers)
+            use seat(0, 280, 380)
             use seat(1, 440, 380)
             use seat(2, 280, 520)
             use seat(3, 440, 520)
