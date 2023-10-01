@@ -4,6 +4,7 @@ init python:
 
 label road:
     $ update_sound(1.0, 10)
+    $ already_stopping = False
 label .loop:
     $ road.advance(0.1)
     call road_main
@@ -32,6 +33,7 @@ label road_main:
     return
 
 label make_a_stop:
+    $ already_stopping = True
     $ i = 8
 label .loop:
     call road_main
@@ -49,8 +51,11 @@ init python:
 screen spot(dist, display, scale=1):
     fixed:
         imagebutton:
+            if display == "hiker.png":
+                focus_mask "hiker-click.png"
             idle display
-            action Jump("make_a_stop")
+            if not already_stopping:
+                action Jump("make_a_stop")
             at transform:
                 xpos int(rideby(1080, 1260, 1.0-dist/4))
                 ypos int(rideby(420, -1200, 1.0-dist/4))
