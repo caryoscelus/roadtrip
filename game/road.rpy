@@ -1,4 +1,5 @@
 label road:
+    $ update_sound(1.0, 10)
     $ position = road.position
     $ road_frame = str(int(road.position * 10) % 4)
     $ location = road.next_location()

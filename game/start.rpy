@@ -4,12 +4,13 @@ init python:
             road.locations.append(GasStation(i*10.0))
 
 label start:
-    play music main
+    $ init_music()
     $ car = Car()
     $ location = StartingPoint()
     $ road = Road()
     jump party.main
 label party:
+    $ update_sound(0.0, 10)
     $ road.position = location.position
     "You stop [location.description]"
 label .main:
