@@ -10,7 +10,7 @@ init python:
     def init_music():
         play_A(5.0)
         queue_drums('A')
-        renpy.music.set_volume(1.2, channel='drums')
+        renpy.music.set_volume(2.0, channel='drums')
         update_sound(0.0, 0.0)
 
     def play_A(fadein=0):
@@ -65,7 +65,7 @@ init python:
                 else:
                     last_queued = 'A'
             else:
-                last_pos += 14
+                last_pos += 2
                 last_queued = 'A'
             playing_queue.append((last_pos, last_queued))
 
