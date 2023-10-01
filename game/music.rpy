@@ -27,11 +27,38 @@ init python:
         for channel, volume in volume.items():
             renpy.music.set_volume(volume, delay, channel=channel)
 
-    def shuffle_tracks():
-        now_playing = renpy.music.get_playing(channel='space')
-        looped = renpy.music.get_loop(channel='space')
-        if now_playing == looped[0]:
-            if random.random() < 0.7:
-                play_A()
+    playing_queue = []
+    now_playing = None
+
+    def fill_the_queue(position):
+        last_pos = position
+        last_queued = 'A'
+        if playing_queue:
+            last_pos = playing_queue[-1][0]
+            last_queued = playing_queue[-1][1]
+        for i in range(10):
+            if last_queued == 'A':
+                last_pos += 14 + random.random()*28
+                random_choice = random.random()*10
+                if random_choice < 5:
+                    playing_queue.append((last_pos, 'B'))
+                else:
+                    playing_queue.append((last_pos, 'A'))
             else:
-                play_B()
+                last_pos += 14
+                playing_queue.append((last_pos, 'A'))
+
+    def clean_the_queue(position):
+        while playing_queue and playing_queue[0][0] < position:
+            playing_queue.pop(0)
+
+    def shuffle_tracks(position):
+        if not playing_queue:
+            fill_the_queue(position)
+        print(playing_queue)
+        now_playing = playing_queue[0][1]
+        if now_playing == 'A':
+            play_A()
+        else:
+            play_B()
+        clean_the_queue(position)
