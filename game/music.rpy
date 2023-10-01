@@ -8,8 +8,7 @@ init python:
 
 init python:
     def init_music():
-        play_A(5.0)
-        queue_drums('A')
+        shuffle_tracks(0.0)
         renpy.music.set_volume(2.0, channel='drums')
         update_sound(0.0, 0.0)
 
@@ -39,7 +38,7 @@ init python:
 
     def update_sound(mood, delay=5.0):
         volume = {
-            'bass_1': 1.0,
+            'bass_1': 2.0,
             'guitar_twang': (1.0-mood)*0.8+0.2,
             'guitar_dist': mood*0.8+0.2,
             'space': (1.0-mood)*0.3+0.5,
@@ -77,6 +76,7 @@ init python:
         if not playing_queue:
             fill_the_queue(position)
         now_playing = playing_queue[0][1]
+        queue_drums(now_playing)
         if now_playing == 'A':
             play_A()
         else:
