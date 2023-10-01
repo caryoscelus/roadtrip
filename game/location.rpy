@@ -8,17 +8,26 @@ init python:
             if drop is None:
                 drag.snap(old_pos[0], old_pos[1])
             elif drop.drag_name == 'street':
-                car.remove_pers(pers)
-                index = location.add_pers(pers)
-                drag.snap(730, 150+index*140)
+                car.remove_item(pers)
+                index = location.add_item(pers)
+                if isinstance(pers, Person):
+                    x = 730
+                elif isinstance(pers, Luggage):
+                    x = 730 + 140
+                drag.snap(x, 150+index*140)
                 renpy.restart_interaction()
             else:
                 if getattr(car, drop.drag_name) is not None:
                     drag.snap(old_pos[0], old_pos[1])
+                    if getattr(car, drop.drag_name) is not pers:
+                        renpy.notify("Place is occupied!")
+                elif isinstance(pers, Person) and not drop.drag_name.startswith('seat'):
+                    drag.snap(old_pos[0], old_pos[1])
+                    renpy.notify("People don't travel in a trunk!")
                 else:
                     drag.snap(drop.x, drop.y)
-                    car.remove_pers(pers)
-                    location.remove_pers(pers)
+                    car.remove_item(pers)
+                    location.remove_item(pers)
                     setattr(car, drop.drag_name, pers)
                     renpy.restart_interaction()
                     # unfortunately restart_interaction is glitching so we have to
@@ -64,9 +73,8 @@ screen location(location, car):
             use person(440, 760, car.trunk1)
             for i, pers in enumerate(location.people):
                 use person(730, 150+i*140, pers)
-                for j, luggage in enumerate(pers.luggage):
-                    if luggage not in car.luggage():
-                        use person(730+(j+1)*140, 150+i*140, luggage)
+            for i, luggage in enumerate(location.luggage):
+                use person(730+140, 150+i*140, luggage)
             use seat(0, 280, 380)
             use seat(1, 440, 380)
             use seat(2, 280, 520)
@@ -83,7 +91,10 @@ screen location(location, car):
 
 screen person(x, y, pers, is_draggable=True):
     if pers:
-        $ name = getattr(pers, 'name', 'luggage')
+        if isinstance(pers, Person):
+            $ name = pers.name
+        elif isinstance(pers, Luggage):
+            $ name = f"{pers.owner.name}'s luggage"
         drag:
             # drag_name pers.name
             xpos x

@@ -71,13 +71,35 @@ init python:
             self.scale = scale
             self.description = description
             self.people = people
+            self.luggage = [luggage for pers in people for luggage in pers.luggage]
         def add_pers(self, pers):
             if pers not in self.people:
                 self.people.append(pers)
             return self.people.index(pers)
+        def add_luggage(self, luggage):
+            if luggage not in self.luggage:
+                self.luggage.append(luggage)
+            return self.luggage.index(luggage)
+        def add_item(self, item):
+            if isinstance(item, Person):
+                return self.add_pers(item)
+            elif isinstance(item, Luggage):
+                return self.add_luggage(item)
+            else:
+                raise ValueError("Can only add people or luggage to a location")
         def remove_pers(self, pers):
             if pers in self.people:
                 self.people.remove(pers)
+        def remove_luggage(self, luggage):
+            if luggage in self.luggage:
+                self.luggage.remove(luggage)
+        def remove_item(self, item):
+            if isinstance(item, Person):
+                self.remove_pers(item)
+            elif isinstance(item, Luggage):
+                self.remove_luggage(item)
+            else:
+                raise ValueError("Can only remove people or luggage from a location")
 
     class StartingPoint(Location):
         def __init__(self):
@@ -99,19 +121,20 @@ init python:
 
     class Self(Person):
         def __init__(self):
-            super().__init__('You', 'anonymous.png', [MyLuggage()])
+            super().__init__('You', 'anonymous.png', [MyLuggage(self)])
 
     class TestPerson(Person):
         def __init__(self, name):
             super().__init__(name, 'pers-1.png', [])
 
     class Luggage:
-        def __init__(self, display):
+        def __init__(self, display, owner):
             self.display = display
+            self.owner = owner
 
     class MyLuggage(Luggage):
-        def __init__(self):
-            super().__init__('luggage.png')
+        def __init__(self, owner):
+            super().__init__('luggage.png', owner)
 
     class Car:
         def __init__(self):
@@ -121,13 +144,17 @@ init python:
             self.seat3 = None
             self.trunk0 = None
             self.trunk1 = None
-        def remove_pers(self, pers):
-            if self.seat1 is pers:
+        def remove_item(self, item):
+            if self.seat1 is item:
                 self.seat1 = None
-            if self.seat2 is pers:
+            if self.seat2 is item:
                 self.seat2 = None
-            if self.seat3 is pers:
+            if self.seat3 is item:
                 self.seat3 = None
+            if self.trunk0 is item:
+                self.trunk0 = None
+            if self.trunk1 is item:
+                self.trunk1 = None
         def people(self):
             return [item for item in (self.seat0, self.seat1, self.seat2, self.seat3) if isinstance(item, Person)]
         def luggage(self):
