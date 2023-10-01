@@ -10,6 +10,7 @@ init python:
     def init_music():
         play_A(5.0)
         queue_drums('A')
+        renpy.music.set_volume(1.2, channel='drums')
         update_sound(0.0, 0.0)
 
     def play_A(fadein=0):
@@ -60,12 +61,13 @@ init python:
                 last_pos += 14 + random.random()*28
                 random_choice = random.random()*10
                 if random_choice < 5:
-                    playing_queue.append((last_pos, 'B'))
+                    last_queued = 'B'
                 else:
-                    playing_queue.append((last_pos, 'A'))
+                    last_queued = 'A'
             else:
                 last_pos += 14
-                playing_queue.append((last_pos, 'A'))
+                last_queued = 'A'
+            playing_queue.append((last_pos, last_queued))
 
     def clean_the_queue(position):
         while playing_queue and playing_queue[0][0] < position:
