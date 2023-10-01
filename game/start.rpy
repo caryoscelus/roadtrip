@@ -43,9 +43,26 @@ init python:
         def advance(self, d):
             self.position += d
 
+    def random_name():
+        return names[int(random.random()*len(names))]
+
+    def random_display():
+        ndisplay = 4
+        return f'pers-{int(random.random()*ndisplay):04}.png'
+
     def random_hiker():
-        # TODO
-        return TestPerson("Rando")
+        name = random_name()
+        display = random_display()
+        random_choice = random.random()*10
+        if random_choice < 1:
+            count = 2
+        elif random_choice < 5:
+            count = 1
+        else:
+            count = 0
+        pers = Person(name, display, [])
+        pers.luggage = [Luggage('luggage.png', pers) for _ in range(count)]
+        return pers
 
     def random_hikers():
         random_choice = random.random()*10
