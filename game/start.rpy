@@ -1,14 +1,13 @@
 init python:
-    renpy.set_autoreload(False)
+    def populate_gasstations():
+        for i in range(1, 100):
+            road.locations.append(GasStation(i*10.0))
 
 label start:
     play music main
     $ car = Car()
     $ location = StartingPoint()
     $ road = Road()
-    # python:
-        # for i in range(1, 100):
-            # road.locations.append(GasStation(i*10.0))
     jump party.main
 label party:
     $ road.position = location.position
@@ -34,7 +33,7 @@ init python:
         def generate_locations(self):
             tplus = 0
             while tplus < 60.0:
-                tplus += 10.0 + random.random() * 20
+                tplus += 6.0 + random.random() * 18.0
                 self.locations.append(random_location(self.position + tplus))
         def next_location(self):
             self.cleanup_locations()
@@ -93,17 +92,26 @@ init python:
             super().__init__(position, 'gas-station', "at gas station", [], scale=1)
 
     class Person:
-        def __init__(self, name, display):
+        def __init__(self, name, display, luggage):
             self.name = name
             self.display = display
+            self.luggage = luggage
 
     class Self(Person):
         def __init__(self):
-            super().__init__('Myself', 'anonymous.png')
+            super().__init__('You', 'anonymous.png', [MyLuggage()])
 
     class TestPerson(Person):
         def __init__(self, name):
-            super().__init__(name, 'pers-1.png')
+            super().__init__(name, 'pers-1.png', [])
+
+    class Luggage:
+        def __init__(self, display):
+            self.display = display
+
+    class MyLuggage(Luggage):
+        def __init__(self):
+            super().__init__('luggage.png')
 
     class Car:
         def __init__(self):
@@ -111,6 +119,8 @@ init python:
             self.seat1 = None
             self.seat2 = None
             self.seat3 = None
+            self.trunk0 = None
+            self.trunk1 = None
         def remove_pers(self, pers):
             if self.seat1 is pers:
                 self.seat1 = None
@@ -118,3 +128,9 @@ init python:
                 self.seat2 = None
             if self.seat3 is pers:
                 self.seat3 = None
+        def people(self):
+            return [item for item in (self.seat0, self.seat1, self.seat2, self.seat3) if isinstance(item, Person)]
+        def luggage(self):
+            return [item for item in
+                    (self.seat0, self.seat1, self.seat2, self.seat3, self.trunk0, self.trunk1)
+                    if isinstance(item, Luggage)]

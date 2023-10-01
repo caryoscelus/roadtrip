@@ -1,4 +1,6 @@
 init python:
+    location_error_message = None
+
     def person_dragged(pers):
         def dragged(drags, drop):
             drag = drags[0]
@@ -33,9 +35,18 @@ init python:
 
     class TryToGo(Return):
         def __call__(self):
-            if car.seat0 is not None:
-                return super().__call__()
-            return None
+            if car.seat0 is None:
+                renpy.notify("Car won't drive without a driver!")
+                return None
+            lacking_luggage = False
+            for pers in car.people():
+                for luggage in pers.luggage:
+                    if luggage not in car.luggage():
+                        renpy.notify(f"{pers.name} won't travel without their luggage!")
+                        lacking_luggage = True
+            if lacking_luggage:
+                return None
+            return super().__call__()
 
 screen location(location, car):
     fixed:
@@ -48,12 +59,20 @@ screen location(location, car):
             use person(440, 380, car.seat1)
             use person(280, 520, car.seat2)
             use person(440, 520, car.seat3)
+            # luggage
+            use person(280, 760, car.trunk0)
+            use person(440, 760, car.trunk1)
             for i, pers in enumerate(location.people):
                 use person(730, 150+i*140, pers)
+                for j, luggage in enumerate(pers.luggage):
+                    if luggage not in car.luggage():
+                        use person(730+(j+1)*140, 150+i*140, luggage)
             use seat(0, 280, 380)
             use seat(1, 440, 380)
             use seat(2, 280, 520)
             use seat(3, 440, 520)
+            use trunk(0, 280, 760)
+            use trunk(1, 440, 760)
             drag:
                 drag_name 'street'
                 xpos 730
@@ -65,7 +84,7 @@ screen location(location, car):
 screen person(x, y, pers, is_draggable=True):
     if pers:
         drag:
-            drag_name pers.name
+            # drag_name pers.name
             xpos x
             ypos y
             add Transform(pers.display, xzoom=0.5, yzoom=0.5)
@@ -75,6 +94,16 @@ screen person(x, y, pers, is_draggable=True):
 
 screen seat(n, x, y):
     $ seat_name = f'seat{n}'
+    drag:
+        drag_name seat_name
+        xpos x
+        ypos y
+        add "empty.png"
+        draggable False
+        droppable True
+
+screen trunk(n, x, y):
+    $ seat_name = f'trunk{n}'
     drag:
         drag_name seat_name
         xpos x

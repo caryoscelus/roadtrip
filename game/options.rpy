@@ -154,6 +154,11 @@ define config.save_directory = "roadtrip-1696073430"
 define config.window_icon = "gui/window_icon.png"
 
 
+## Developer settings ##########################################################
+init python:
+    renpy.set_autoreload(False)
+
+
 ## Build configuration #########################################################
 ##
 ## This section controls how Ren'Py turns your project into distribution files.
