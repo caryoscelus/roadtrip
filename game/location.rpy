@@ -83,11 +83,16 @@ screen location(location, car):
 
 screen person(x, y, pers, is_draggable=True):
     if pers:
+        $ name = getattr(pers, 'name', 'luggage')
         drag:
             # drag_name pers.name
             xpos x
             ypos y
-            add Transform(pers.display, xzoom=0.5, yzoom=0.5)
+            add Composite(
+                (128, 128),
+                (0, 0), Transform(pers.display, xzoom=0.5, yzoom=0.5),
+                (0, 100), Text(name)
+                )
             draggable is_draggable
             droppable False
             dragged person_dragged(pers)
