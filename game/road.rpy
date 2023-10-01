@@ -23,6 +23,10 @@ label road_main:
     $ darkness = math.sin(timeofday) * 0.7
     show night-filter onlayer effects:
         alpha darkness
+    if darkness > 0.4:
+        show lights onlayer effects
+    else:
+        hide lights
     pause 0.1
     hide screen hiker
     return
