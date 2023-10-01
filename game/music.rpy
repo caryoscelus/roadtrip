@@ -55,7 +55,6 @@ init python:
     def shuffle_tracks(position):
         if not playing_queue:
             fill_the_queue(position)
-        print(playing_queue)
         now_playing = playing_queue[0][1]
         if now_playing == 'A':
             play_A()

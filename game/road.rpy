@@ -1,5 +1,11 @@
 label road:
     $ update_sound(1.0, 10)
+label .loop:
+    $ road.advance(0.1)
+    call road_main
+    jump .loop
+
+label road_main:
     $ position = road.position
     $ shuffle_tracks(position)
     $ road_frame = str(int(road.position * 10) % 4)
@@ -11,8 +17,17 @@ label road:
         show screen spot(dist, location.display, location.scale)
     pause 0.1
     hide screen hiker
-    $ road.advance(0.1)
-    jump road
+    return
+
+label make_a_stop:
+    $ i = 8
+label .loop:
+    call road_main
+    $ road.advance(0.1*i/8)
+    $ i -= 1
+    if i > 0:
+        jump .loop
+    jump party
 
 init python:
     def rideby(a, b, t):
@@ -23,7 +38,7 @@ screen spot(dist, display, scale=1):
     fixed:
         imagebutton:
             idle display
-            action Jump("party")
+            action Jump("make_a_stop")
             at transform:
                 xpos int(rideby(1080, 1260, 1.0-dist/4))
                 ypos int(rideby(420, -1200, 1.0-dist/4))
