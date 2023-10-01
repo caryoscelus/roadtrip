@@ -185,3 +185,6 @@ define names = ['Ibrahim', 'Mikołaj', 'Wesa', 'Phanom', 'Meili', 'Saki',
          'Yiannis', 'Gianna', 'Nesrin', 'Phongchai', 'Amanuel', 'Paulina',
          'Kasperi', 'Ufuk', 'Kota', 'Winona', 'Arun', 'Takoda', 'Vincenzo',
          'Eren']
+
+# A lot of names in this random list are too long to look good with current UI
+define short_names = [name for name in names if len(name) < 8]

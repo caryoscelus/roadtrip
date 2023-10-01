@@ -46,7 +46,7 @@ init python:
             self.position += d
 
     def random_name():
-        return names[int(random.random()*len(names))]
+        return short_names[int(random.random()*len(short_names))]
 
     def random_display():
         ndisplay = 4
