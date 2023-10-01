@@ -14,6 +14,7 @@ label party:
     $ road.position = location.position
     "You stop [location.description]"
 label .main:
+    hide lights
     hide screen spot
     call screen location(location, car)
     jump road
