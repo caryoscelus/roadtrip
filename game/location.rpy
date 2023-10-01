@@ -59,7 +59,7 @@ init python:
 
 screen location(location, car):
     fixed:
-        add "manage.png"
+        add location.display_manage
         textbutton "Hit the road!" action TryToGo():
             xalign 0.5
             ypos 0.9

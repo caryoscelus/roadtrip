@@ -84,9 +84,10 @@ init python:
             return HikerPoint(position, random_hikers())
 
     class Location:
-        def __init__(self, position, display, description, people, scale=1):
+        def __init__(self, position, display, description, people, scale=1, display_manage="manage.png"):
             self.position = position
             self.display = display
+            self.display_manage = display_manage
             self.scale = scale
             self.description = description
             self.people = people
@@ -122,7 +123,7 @@ init python:
 
     class StartingPoint(Location):
         def __init__(self):
-            super().__init__(0.0, None, "starting point", [Self()])
+            super().__init__(0.0, None, "starting point", [Self()], display_manage="tutorial.png")
 
     class HikerPoint(Location):
         def __init__(self, position, people):
