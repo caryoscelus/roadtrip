@@ -6,9 +6,16 @@ init python:
 
 init python:
     def init_music():
-        for track in tracks:
-            renpy.music.play(track+'_A', channel=track, fadein=5)
+        play_A(1.0)
         update_sound(0.0, 0.0)
+
+    def play_A(fadein=0):
+        for track in tracks:
+            renpy.music.queue(track+'_A', channel=track, fadein=fadein)
+
+    def play_B(fadein=0):
+        for track in tracks:
+            renpy.music.queue(track+'_B', channel=track, fadein=fadein)
 
     def update_sound(mood, delay=5.0):
         volume = {
@@ -19,3 +26,12 @@ init python:
             }
         for channel, volume in volume.items():
             renpy.music.set_volume(volume, delay, channel=channel)
+
+    def shuffle_tracks():
+        now_playing = renpy.music.get_playing(channel='space')
+        looped = renpy.music.get_loop(channel='space')
+        if now_playing == looped[0]:
+            if random.random() < 0.7:
+                play_A()
+            else:
+                play_B()
