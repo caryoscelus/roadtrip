@@ -1,12 +1,15 @@
 define tracks = ['bass_1', 'guitar_twang', 'guitar_dist', 'space']
+define drum_tracks = ['drums']
+define drum_variations = {'A': 4, 'B': 1}
 
 init python:
-    for channel in tracks:
-        renpy.music.register_channel(channel, mixer='music', loop=True, stop_on_mute=False, tight=True, file_prefix='audio/', file_suffix='.flac')
+    for channel in tracks + drum_tracks:
+        renpy.music.register_channel(channel, mixer='music', loop=True, stop_on_mute=False, tight=True, file_prefix='audio/', file_suffix='.opus')
 
 init python:
     def init_music():
-        play_A(1.0)
+        play_A(5.0)
+        queue_drums('A')
         update_sound(0.0, 0.0)
 
     def play_A(fadein=0):
@@ -16,6 +19,22 @@ init python:
     def play_B(fadein=0):
         for track in tracks:
             renpy.music.queue(track+'_B', channel=track, fadein=fadein)
+
+    def weighted_drum_variation(n):
+        if n == 1:
+            return 1
+        elif n == 4:
+            random_choice = random.random()*10
+            if random_choice < 7:
+                return 1
+            return int(random_choice)-5
+        else:
+            raise ValueError("TODO: support more drum variation options")
+
+    def queue_drums(what):
+        nv = drum_variations[what]
+        toplay = [f'drums_{what}{weighted_drum_variation(nv)}' for _ in range(6)]
+        renpy.music.queue(toplay, channel='drums')
 
     def update_sound(mood, delay=5.0):
         volume = {
