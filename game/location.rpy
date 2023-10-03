@@ -59,12 +59,15 @@ init python:
 
 screen location(location, car):
     fixed:
-        add location.display_manage
+        add "empty-location.png"
+        if location.display_manage:
+            add location.display_manage
+        add "car.png"
         textbutton "Hit the road!" action TryToGo():
             xalign 0.5
             ypos 0.9
         draggroup:
-            use person(280, 380, car.seat0, False)
+            use person(280, 380, car.seat0)
             use person(440, 380, car.seat1)
             use person(280, 520, car.seat2)
             use person(440, 520, car.seat3)

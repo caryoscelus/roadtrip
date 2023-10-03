@@ -62,7 +62,9 @@ init python:
             count = 1
         else:
             count = 0
-        pers = Person(name, display, [])
+        # 0 - 200 tg for paying
+        money = int(random.random() * 20) * 10
+        pers = Person(name, display, [], money)
         pers.luggage = [Luggage('luggage.png', pers) for _ in range(count)]
         return pers
 
@@ -84,7 +86,7 @@ init python:
             return HikerPoint(position, random_hikers())
 
     class Location:
-        def __init__(self, position, display, description, people, scale=1, display_manage="manage.png"):
+        def __init__(self, position, display, description, people, scale=1, display_manage=""):
             self.position = position
             self.display = display
             self.display_manage = display_manage
@@ -131,53 +133,4 @@ init python:
 
     class GasStation(Location):
         def __init__(self, position):
-            super().__init__(position, 'gas-station', "at gas station", [], scale=1)
-
-    class Person:
-        def __init__(self, name, display, luggage):
-            self.name = name
-            self.display = display
-            self.luggage = luggage
-
-    class Self(Person):
-        def __init__(self):
-            super().__init__('You', 'anonymous.png', [MyLuggage(self)])
-
-    class TestPerson(Person):
-        def __init__(self, name):
-            super().__init__(name, 'pers-1.png', [])
-
-    class Luggage:
-        def __init__(self, display, owner):
-            self.display = display
-            self.owner = owner
-
-    class MyLuggage(Luggage):
-        def __init__(self, owner):
-            super().__init__('luggage.png', owner)
-
-    class Car:
-        def __init__(self):
-            self.seat0 = None
-            self.seat1 = None
-            self.seat2 = None
-            self.seat3 = None
-            self.trunk0 = None
-            self.trunk1 = None
-        def remove_item(self, item):
-            if self.seat1 is item:
-                self.seat1 = None
-            if self.seat2 is item:
-                self.seat2 = None
-            if self.seat3 is item:
-                self.seat3 = None
-            if self.trunk0 is item:
-                self.trunk0 = None
-            if self.trunk1 is item:
-                self.trunk1 = None
-        def people(self):
-            return [item for item in (self.seat0, self.seat1, self.seat2, self.seat3) if isinstance(item, Person)]
-        def luggage(self):
-            return [item for item in
-                    (self.seat0, self.seat1, self.seat2, self.seat3, self.trunk0, self.trunk1)
-                    if isinstance(item, Luggage)]
+            super().__init__(position, 'gas-station', "at gas station", [], scale=1, display_manage="gas-station-manage.png")
