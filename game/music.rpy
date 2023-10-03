@@ -43,8 +43,9 @@ init python:
             'guitar_dist': mood*0.8+0.2,
             'space': (1.0-mood)*0.3+0.5,
             }
+        total_volume = sum(volume.values())
         for channel, volume in volume.items():
-            renpy.music.set_volume(volume, delay, channel=channel)
+            renpy.music.set_volume(volume/total_volume, delay, channel=channel)
 
     playing_queue = []
     now_playing = None
