@@ -55,9 +55,13 @@ init python:
                         lacking_luggage = True
             if lacking_luggage:
                 return None
+            if car.fuel <= 0:
+                renpy.notify("Out of gas!")
+                return None
             return super().__call__()
 
 screen location(location, car):
+    layer 'master'
     fixed:
         add "empty-location.png"
         if location.display_manage:

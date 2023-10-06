@@ -7,7 +7,9 @@ label road:
     $ update_sound(1.0, 10)
     $ already_stopping = False
 label .loop:
-    $ road.advance(0.1)
+    $ dist = car.drive(0.1)
+    if dist == 0:
+        jump stop_now
     call road_main
     jump .loop
 
@@ -39,10 +41,16 @@ label make_a_stop:
     $ i = 8
 label .loop:
     call road_main
-    $ road.advance(0.1*i/8)
+    $ dist = car.drive(0.1*i/8)
+    if dist == 0:
+        jump stop_now
     $ i -= 1
     if i > 0:
         jump .loop
+    jump party
+
+label stop_now:
+    $ location = Location(road.position, '', "somewhere on the road", [])
     jump party
 
 init python:
@@ -51,6 +59,7 @@ init python:
         return a * (1-x) + b * x
 
 screen spot(dist, display, scale=1):
+    layer 'master'
     fixed:
         imagebutton:
             if display == "hiker.png":

@@ -2,6 +2,10 @@
 init python:
 """
 
+# 3 tanks / 24h
+FUEL_CONSUMPTION = 0.3
+DISTANCE_PER_FUEL = 1 / FUEL_CONSUMPTION
+
 class Car:
     def __init__(self):
         self.seat0 = None
@@ -12,8 +16,14 @@ class Car:
         self.trunk1 = None
         self.max_fuel = 60
         self.fuel = self.max_fuel
-    def burn_fuel(self, t):
-        return t
+    def drive(self, t):
+        need_fuel = t * FUEL_CONSUMPTION
+        burned_fuel = min(need_fuel, self.fuel)
+        self.fuel -= burned_fuel
+        distance = DISTANCE_PER_FUEL * burned_fuel
+        # TODO
+        road.advance(distance)
+        return distance
     def remove_item(self, item):
         if self.seat0 is item:
             self.seat0 = None
