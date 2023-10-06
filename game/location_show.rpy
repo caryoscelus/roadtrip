@@ -60,6 +60,13 @@ init python:
                 return None
             return super().__call__()
 
+image help_lights:
+    "car-help-lights.png"
+    pause 0.6
+    "empty.png"
+    pause 0.6
+    repeat
+
 screen location(location, car):
     layer 'master'
     fixed:
@@ -67,6 +74,8 @@ screen location(location, car):
         if location.display_manage:
             add location.display_manage
         add "car.png"
+        if car.fuel <= 0:
+            add "help_lights"
         textbutton "Hit the road!" action TryToGo():
             xalign 0.5
             ypos 0.9
