@@ -22,11 +22,12 @@ label road_main:
     if 0 < dist <= 4:
         show screen spot(dist, location.display, location.scale)
     $ timeofday = position % DAY_LENGTH / DAY_LENGTH * 2 * math.pi
-    $ darkness = math.sin(timeofday) * 0.7
+    $ darkness = math.sin(timeofday) * 0.8
     show night-filter onlayer effects:
         alpha darkness
-    if darkness > 0.4:
-        show lights onlayer effects
+    if darkness > 0.5:
+        show lights onlayer effects:
+            alpha 0.8
     else:
         hide lights
     pause 0.1
