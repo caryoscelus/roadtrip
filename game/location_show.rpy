@@ -91,6 +91,13 @@ screen location(location, car):
                 add "empty-street.png"
                 draggable False
                 droppable True
+            for spot in location.drop_spots:
+                drag:
+                    xpos spot.x
+                    ypos spot.y
+                    add "empty.png"
+                    draggable False
+                    droppable True
 
 screen person(x, y, pers, is_draggable=True):
     if pers:

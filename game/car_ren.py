@@ -10,7 +10,8 @@ class Car:
         self.seat3 = None
         self.trunk0 = None
         self.trunk1 = None
-        self.fuel = 60
+        self.max_fuel = 60
+        self.fuel = self.max_fuel
     def burn_fuel(self, t):
         return t
     def remove_item(self, item):

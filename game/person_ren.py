@@ -21,3 +21,5 @@ class Luggage:
 class MyLuggage(Luggage):
     def __init__(self, owner):
         super().__init__('luggage.png', owner)
+
+pc = Self()

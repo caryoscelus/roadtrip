@@ -1,6 +1,5 @@
 init python:
     import math
-    renpy.add_layer('effects', above='overlay')
 
     DAY_LENGTH = 600
 
