@@ -8,6 +8,7 @@ label start:
     $ car = Car()
     $ location = StartingPoint()
     $ road = Road()
+    $ time_now.init(0.0)
     show screen hud
     jump party.main
 label party:

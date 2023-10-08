@@ -23,6 +23,7 @@ class Car:
         distance = DISTANCE_PER_FUEL * burned_fuel
         # TODO
         road.advance(distance)
+        time_now.passed(t)
         return distance
     def remove_item(self, item):
         if self.seat0 is item:

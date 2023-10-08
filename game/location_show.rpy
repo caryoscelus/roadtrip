@@ -60,6 +60,11 @@ init python:
                 return None
             return super().__call__()
 
+    def ask_for_fuel():
+        time_now.passed(5)
+        car.fuel += int(random.random()*20+5)
+        renpy.notify("A compassionate driver donated you some gas!")
+
 image help_lights:
     "car-help-lights.png"
     pause 0.6
@@ -76,6 +81,9 @@ screen location(location, car):
         add "car.png"
         if car.fuel <= 0:
             add "help_lights"
+            textbutton "Try to stop someone and ask for gas" action ask_for_fuel:
+                xalign 0.0
+                ypos 0.9
         textbutton "Hit the road!" action TryToGo():
             xalign 0.5
             ypos 0.9

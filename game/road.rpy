@@ -23,7 +23,7 @@ label road_main:
     scene expression "road-frame-000[road_frame].png"
     if 0 < dist <= 4:
         show screen spot(dist, location.display, location.scale)
-    $ timeofday = position % DAY_LENGTH / DAY_LENGTH * 2 * math.pi
+    $ timeofday = time_now.t % DAY_LENGTH / DAY_LENGTH * 2 * math.pi
     $ darkness = math.sin(timeofday) * 0.8
     show night-filter onlayer effects:
         alpha darkness
