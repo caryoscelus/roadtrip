@@ -4,6 +4,7 @@ init python:
     DAY_LENGTH = 600
 
 label road:
+    $ quick_menu = False
     $ update_sound(1.0, 10)
     $ already_stopping = False
 label .loop:

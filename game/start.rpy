@@ -12,6 +12,7 @@ label start:
     show screen hud
     jump party.main
 label party:
+    $ quick_menu = True
     $ update_sound(0.0, 10)
     $ road.position = location.position
     "You stop [location.description]"
