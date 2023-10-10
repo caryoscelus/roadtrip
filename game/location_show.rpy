@@ -16,6 +16,12 @@ init python:
                     x = 730 + 140
                 drag.snap(x, 150+index*140)
                 renpy.restart_interaction()
+            elif drop.drag_name.startswith('spot_'):
+                f = globals()[drop.drag_name]
+                f(pers)
+                # currently always return, regardless of success
+                drag.snap(old_pos[0], old_pos[1])
+                renpy.restart_interaction()
             else:
                 if getattr(car, drop.drag_name) is not None:
                     drag.snap(old_pos[0], old_pos[1])
@@ -114,6 +120,7 @@ screen location(location, car):
                 droppable True
             for spot in location.drop_spots:
                 drag:
+                    drag_name spot.f
                     xpos spot.x
                     ypos spot.y
                     add "empty.png"
