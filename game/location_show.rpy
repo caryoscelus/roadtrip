@@ -44,7 +44,7 @@ init python:
 
     class TryToGo(Return):
         def __call__(self):
-            if car.seat0 is None:
+            if not isinstance(car.seat0, Person):
                 renpy.notify("Car won't drive without a driver!")
                 return None
             lacking_luggage = False
